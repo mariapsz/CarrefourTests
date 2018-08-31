@@ -36,8 +36,7 @@ namespace CarrefourTests
 
         public void Load() {
             PropertiesCollection.driver.Navigate().GoToUrl(URL);
-        }
- 
+        } 
 
         public static ProductsPage SelectSubcategory(string subcategory) {
                         
