@@ -28,6 +28,12 @@ namespace CarrefourTests
 
         [FindsBy(How = How.CssSelector, Using = "div[class='c4-product-card-name'] a[ng-href]")]
         IList<IWebElement> allProductsNameElements { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "md-icon[md-svg-src='/assets/svg/basket_icon.svg']")]
+        IWebElement cardPreviewButton { get; set; }
+
+        [FindsBy(How = How.LinkText, Using = "Twój KOSZYK")]
+        IWebElement goToCardButton;
         
         public void addToCard(int positionNumber) {
 
@@ -43,7 +49,13 @@ namespace CarrefourTests
                 i++;
             }
 
-            wait.Until(ExpectedConditions.TextToBePresentInElement(cartProductsCountElement, Convert.ToString( expectedCartProductsCount)));
+            wait.Until(ExpectedConditions.TextToBePresentInElement(cartProductsCountElement, Convert.ToString(expectedCartProductsCount)));
+            addItemToList(positionNumber);
+        }
+
+        public void addItemToList(int positionNumber) {
+            Product boughtItem = new Product(getProductName(positionNumber), getProductPrice(positionNumber));
+            PropertiesCollection.addedProducts.Add(boughtItem);
         }
 
         public string getProductPrice(int positionNumber) {
@@ -68,7 +80,11 @@ namespace CarrefourTests
             throw new Exception("getProductPrice() error");
         }
 
-      
+        public void goToCard() {
+            cardPreviewButton.Click();
+            System.Threading.Thread.Sleep(2000);
+            goToCardButton.Click();
+        }
 
         
     }

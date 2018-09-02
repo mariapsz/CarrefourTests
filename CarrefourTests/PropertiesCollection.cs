@@ -10,5 +10,13 @@ namespace CarrefourTests
     class PropertiesCollection
     {
         public static IWebDriver driver { get; set;}
+        public static List<Product> addedProducts = new List<Product>();
+
+        public static void showAddedProductsList() {
+            foreach (Product p in addedProducts)
+            {
+                Console.WriteLine(p.Name + " " + p.Price);
+            }
+        }
     }
 }

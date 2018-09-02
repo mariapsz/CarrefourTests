@@ -15,21 +15,8 @@ namespace CarrefourTests
         }
 
         public string URL;
-        WebDriverWait wait = new WebDriverWait(PropertiesCollection.driver, TimeSpan.FromSeconds(20));
-
-        public void CloseCookiesWindow() {
-            wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[class='md-button md-ink-ripple']")));
-            PropertiesCollection.driver.FindElement(By.CssSelector("button[class='md-button md-ink-ripple']")).Click();
-        }
-
-        public void AddAdressToSendProducts(string adress) {
-            PropertiesCollection.driver.FindElement(By.Name("zipCode")).SendKeys(adress);
-            PropertiesCollection.driver.FindElement(By.CssSelector("button[class='md-primary md-button md-ink-ripple']")).Click();
-            //wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[class='md-icon-button c4-close-dialog md-button md-ink-ripple']")));
-            System.Threading.Thread.Sleep(3000);
-            PropertiesCollection.driver.FindElement(By.CssSelector("button[class='md-icon-button c4-close-dialog md-button md-ink-ripple']")).Click();
-        }
-
+        static WebDriverWait wait = new WebDriverWait(PropertiesCollection.driver, TimeSpan.FromSeconds(20));
+        
         public void SwitchDriverToThisPage() {
             PropertiesCollection.driver.SwitchTo().Window(PropertiesCollection.driver.WindowHandles[1]);
         }
@@ -39,10 +26,11 @@ namespace CarrefourTests
         } 
 
         public static ProductsPage SelectSubcategory(string subcategory) {
-                        
-            System.Threading.Thread.Sleep(3000);
+            //SubcategoriesPage.wait.Until(ExpectedConditions.ElementIsVisible(By.LinkText("WSZYSTKIE KATEGORIE")));
+            System.Threading.Thread.Sleep(5000);
             PropertiesCollection.driver.FindElement(By.LinkText("WSZYSTKIE KATEGORIE")).Click();
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(5000);
+            //SubcategoriesPage.wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("a[class='c4-link layout-align-start-center layout-row']")));
             IList<IWebElement> allSubcategoriesElements = PropertiesCollection.driver.FindElements(By.CssSelector("a[class='c4-link layout-align-start-center layout-row']"));
 
             foreach (IWebElement e in allSubcategoriesElements) {
@@ -58,8 +46,19 @@ namespace CarrefourTests
             throw new Exception("SelectSubcategory(string subcategory) error");
         }
 
-        
+        public void CloseCookiesWindow()
+        {
+            wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[class='md-button md-ink-ripple']")));
+            PropertiesCollection.driver.FindElement(By.CssSelector("button[class='md-button md-ink-ripple']")).Click();
+        }
 
-
+        public void AddAdressToSendProducts(string adress)
+        {
+            PropertiesCollection.driver.FindElement(By.Name("zipCode")).SendKeys(adress);
+            PropertiesCollection.driver.FindElement(By.CssSelector("button[class='md-primary md-button md-ink-ripple']")).Click();
+            //wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[class='md-icon-button c4-close-dialog md-button md-ink-ripple']")));
+            System.Threading.Thread.Sleep(10000);
+            PropertiesCollection.driver.FindElement(By.CssSelector("button[class='md-icon-button c4-close-dialog md-button md-ink-ripple']")).Click();
+        }
     }
 }

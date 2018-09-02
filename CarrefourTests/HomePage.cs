@@ -12,7 +12,7 @@ namespace CarrefourTests
             PageFactory.InitElements(PropertiesCollection.driver, this);
         }
 
-        [FindsBy(How = How.CssSelector, Using = "div[id='nav - navbar - menu'], li")]
+        [FindsBy(How = How.CssSelector, Using = "div[id='nav - navbar - menu'], li, a")]
         IList<IWebElement> mainManuOptions { get; set; }
                
 
@@ -20,10 +20,11 @@ namespace CarrefourTests
 
             foreach (IWebElement e in mainManuOptions) {
                 if (e.Text == categoryName) {
-                    e.Click();
-                    //string categoryURL = e.GetAttribute("href");
+
+                    //string categoryURL = e.GetCssValue("href");
                     string categoryURL = "";
                     Console.WriteLine(categoryURL);
+                    e.Click();
                     return new SubcategoriesPage(categoryURL);
                 }
             }

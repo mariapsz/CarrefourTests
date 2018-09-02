@@ -23,7 +23,6 @@ namespace CarrefourTests
         public void ExecuteTest() {
 
             HomePage home = new HomePage();
-            List<Product> addedProducts = new List<Product>();
 
             SubcategoriesPage foodAndDrinkPage = home.SelectCategory("ZAKUPY SPOŻYWCZE");
             foodAndDrinkPage.SwitchDriverToThisPage();
@@ -32,31 +31,30 @@ namespace CarrefourTests
 
             ProductsPage milkEggsPage = SubcategoriesPage.SelectSubcategory("Mleko, nabiał, jaja");
             milkEggsPage.addToCard(1);
-            addedProducts.Add(new Product(milkEggsPage.getProductName(1), milkEggsPage.getProductPrice(1)));
             milkEggsPage.addToCard(4);
-            addedProducts.Add(new Product(milkEggsPage.getProductName(4), milkEggsPage.getProductPrice(4)));
             
             PropertiesCollection.driver.Navigate().Back();
             ProductsPage frozenFoods =  SubcategoriesPage.SelectSubcategory("Mrożonki");
             frozenFoods.addToCard(2);
-            addedProducts.Add(new Product(frozenFoods.getProductName(2), frozenFoods.getProductPrice(2)));
             frozenFoods.addToCard(5);
-            addedProducts.Add(new Product(frozenFoods.getProductName(5), frozenFoods.getProductPrice(5)));
+            frozenFoods.goToCard();
 
-            foreach (Product p in addedProducts) {
-                Console.WriteLine(p.Name + " " + p.Price);
-            }
-
-
+            PropertiesCollection.showAddedProductsList();
 
 
         }
 
+        [Test]
+        public void TestTest() {
+            HomePage home = new HomePage();
+            SubcategoriesPage foodAndDrinkPage = home.SelectCategory("ZAKUPY SPOŻYWCZE");
+        }
+
         [TearDown]
         public void CleanUp() {
-            PropertiesCollection.driver.Close();
-            HomePage.SwitchDriverToThisPage();
-            PropertiesCollection.driver.Close();
+            //PropertiesCollection.driver.Close();
+            //HomePage.SwitchDriverToThisPage();
+            //PropertiesCollection.driver.Close();
         }
     }
 }
