@@ -13,8 +13,7 @@ namespace CarrefourTests
         public static List<Product> addedProducts = new List<Product>();
 
         public static void showAddedProductsList() {
-            foreach (Product p in addedProducts)
-            {
+            foreach (Product p in addedProducts) {
                 Console.WriteLine(p.Name + " " + p.Price);
             }
         }
