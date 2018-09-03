@@ -31,29 +31,25 @@ namespace CarrefourTests
             ProductsPage milkEggsPage = foodAndDrinkPage.SelectSubcategory("Mleko, nabiał, jaja");
             milkEggsPage.addToCard(3);
             milkEggsPage.addToCard(4);
-            milkEggsPage.addToCard(3);
+            milkEggsPage.addToCard(2);
             milkEggsPage.addToCard(5);
 
             foodAndDrinkPage.Load();
             ProductsPage frozenFoods = foodAndDrinkPage.SelectSubcategory("Mrożonki");
             frozenFoods.addToCard(2);
-            frozenFoods.addToCard(4);
 
             frozenFoods.goToCard();
-            Card.createProductList();       
+            Card.createProductList();
+            Console.WriteLine();
             PropertiesCollection.showAddedProductsList();
+            Console.WriteLine();
             Card.showProductsList();
+            Console.WriteLine();
 
-            if (PropertiesCollection.addedProductsList.Equals(Card.productsList))
+            if (PropertiesCollection.isContentEqual(Card.productsList, PropertiesCollection.addedProductsList)) 
                 Console.WriteLine("Names and prices of added products and products in card are the same");
             else Console.WriteLine("Names and prices of added products and products in card are NOT the same");
 
-        }
-
-        [Test]
-        public void TestTest() {
-            HomePage home = new HomePage();
-            SubcategoriesPage foodAndDrinkPage = home.SelectCategory("ZAKUPY SPOŻYWCZE");
         }
 
         [TearDown]

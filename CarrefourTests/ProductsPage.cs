@@ -50,7 +50,7 @@ namespace CarrefourTests
                         e.FindElement(By.CssSelector("button[class='md-primary md-block md-button ng-scope md-ink-ripple']")).Click();
                     }
                     catch (NoSuchElementException) {
-                        e.FindElement(By.LinkText("+")).Click();
+                        e.FindElement(By.CssSelector("button[class='md-button md-ink-ripple']:nth-child(3)")).Click();
                     }                    
                     break;
                 }
