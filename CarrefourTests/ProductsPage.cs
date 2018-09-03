@@ -16,12 +16,14 @@ namespace CarrefourTests
 
         WebDriverWait wait = new WebDriverWait(PropertiesCollection.driver, TimeSpan.FromSeconds(20));
         string URL { get; set; }
+        [FindsBy(How = How.CssSelector, Using = "c4-product-card[ng-repeat]")]
+        IList<IWebElement> allProductsDivs { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "span[class='c4-quick-cart-text layout-column'] span[class='ng-binding']")]
         IWebElement cartProductsCountElement { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "div[class='c4-product-card-actions'] button[class='md-primary md-block md-button ng-scope md-ink-ripple']")]
-        IList<IWebElement> allProductsBuyButtons { get; set; }
+        //[FindsBy(How = How.CssSelector, Using = "button[class='md-primary md-block md-button ng-scope md-ink-ripple']")]
+        //IWebElement buyButton { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "div[class='c4-product-card-price'] span[class='c4-price ng-binding c4-primary']")]
         IList<IWebElement> allProductsPriceElements { get; set; }
@@ -32,18 +34,24 @@ namespace CarrefourTests
         [FindsBy(How = How.CssSelector, Using = "md-icon[md-svg-src='/assets/svg/basket_icon.svg']")]
         IWebElement cardPreviewButton { get; set; }
 
-        [FindsBy(How = How.LinkText, Using = "Twój KOSZYK")]
+        [FindsBy(How = How.LinkText, Using = "TWÓJ KOSZYK")]
         IWebElement goToCardButton;
-        
+
+
         public void addToCard(int positionNumber) {
 
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div[class='c4-product-card-actions']")));
             int expectedCartProductsCount = Convert.ToInt16(cartProductsCountElement.Text) + 1;
 
             int i = 1;
-            foreach (IWebElement e in allProductsBuyButtons) {
+            foreach (IWebElement e in allProductsDivs) {
                 if (i == positionNumber) {
-                    e.Click();
+                    try {
+                        e.FindElement(By.CssSelector("button[class='md-primary md-block md-button ng-scope md-ink-ripple']")).Click();
+                    }
+                    catch (NoSuchElementException) {
+                        e.FindElement(By.LinkText("+")).Click();
+                    }                    
                     break;
                 }
                 i++;
@@ -52,10 +60,10 @@ namespace CarrefourTests
             wait.Until(ExpectedConditions.TextToBePresentInElement(cartProductsCountElement, Convert.ToString(expectedCartProductsCount)));
             addItemToList(positionNumber);
         }
-
+        
         public void addItemToList(int positionNumber) {
             Product boughtItem = new Product(getProductName(positionNumber), getProductPrice(positionNumber));
-            PropertiesCollection.addedProducts.Add(boughtItem);
+            PropertiesCollection.addedProductsList.Add(boughtItem);
         }
 
         public string getProductPrice(int positionNumber) {

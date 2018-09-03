@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 using System;
-using System.Collections.Generic;
 
 
 namespace CarrefourTests
@@ -29,18 +28,25 @@ namespace CarrefourTests
             foodAndDrinkPage.CloseCookiesWindow();
             foodAndDrinkPage.AddAdressToSendProducts("00113");
 
-            ProductsPage milkEggsPage = SubcategoriesPage.SelectSubcategory("Mleko, nabiał, jaja");
-            milkEggsPage.addToCard(1);
+            ProductsPage milkEggsPage = foodAndDrinkPage.SelectSubcategory("Mleko, nabiał, jaja");
+            milkEggsPage.addToCard(3);
             milkEggsPage.addToCard(4);
-            
-            PropertiesCollection.driver.Navigate().Back();
-            ProductsPage frozenFoods =  SubcategoriesPage.SelectSubcategory("Mrożonki");
+            milkEggsPage.addToCard(3);
+            milkEggsPage.addToCard(5);
+
+            foodAndDrinkPage.Load();
+            ProductsPage frozenFoods = foodAndDrinkPage.SelectSubcategory("Mrożonki");
             frozenFoods.addToCard(2);
-            frozenFoods.addToCard(5);
+            frozenFoods.addToCard(4);
+
             frozenFoods.goToCard();
-
+            Card.createProductList();       
             PropertiesCollection.showAddedProductsList();
+            Card.showProductsList();
 
+            if (PropertiesCollection.addedProductsList.Equals(Card.productsList))
+                Console.WriteLine("Names and prices of added products and products in card are the same");
+            else Console.WriteLine("Names and prices of added products and products in card are NOT the same");
 
         }
 

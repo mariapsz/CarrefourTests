@@ -16,29 +16,25 @@ namespace CarrefourTests
 
         public string URL;
         static WebDriverWait wait = new WebDriverWait(PropertiesCollection.driver, TimeSpan.FromSeconds(20));
+
+        [FindsBy(How = How.LinkText, Using = "WSZYSTKIE KATEGORIE")]
+        public IWebElement allSubcategoriesButton { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "a[class='c4-link layout-align-start-center layout-row']")]
+        public IList<IWebElement> allSubcategoriesElements { get; set; }
+
         
-        public void SwitchDriverToThisPage() {
-            PropertiesCollection.driver.SwitchTo().Window(PropertiesCollection.driver.WindowHandles[1]);
-        }
 
-        public void Load() {
-            PropertiesCollection.driver.Navigate().GoToUrl(URL);
-        } 
-
-        public static ProductsPage SelectSubcategory(string subcategory) {
-            //SubcategoriesPage.wait.Until(ExpectedConditions.ElementIsVisible(By.LinkText("WSZYSTKIE KATEGORIE")));
+        public ProductsPage SelectSubcategory(string subcategory) {
+            //wait.Until(ExpectedConditions.ElementToBeClickable(allSubcategoriesButton));
             System.Threading.Thread.Sleep(5000);
-            PropertiesCollection.driver.FindElement(By.LinkText("WSZYSTKIE KATEGORIE")).Click();
-            System.Threading.Thread.Sleep(5000);
-            //SubcategoriesPage.wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("a[class='c4-link layout-align-start-center layout-row']")));
-            IList<IWebElement> allSubcategoriesElements = PropertiesCollection.driver.FindElements(By.CssSelector("a[class='c4-link layout-align-start-center layout-row']"));
-
+            allSubcategoriesButton.Click();
+            //System.Threading.Thread.Sleep(4000);
+            
             foreach (IWebElement e in allSubcategoriesElements) {
-                if (e.Text == subcategory) {
+                if (e.Text == subcategory) {                    
+                    string productsPageURL = e.GetAttribute("href");
                     e.Click();
-                    //string productsPageURL = e.GetAttribute("href");
-                    string productsPageURL = "";
-                    Console.Write(productsPageURL);
                     return new ProductsPage(productsPageURL);
                 }
             }
@@ -46,18 +42,24 @@ namespace CarrefourTests
             throw new Exception("SelectSubcategory(string subcategory) error");
         }
 
-        public void CloseCookiesWindow()
-        {
+        public void SwitchDriverToThisPage() {
+            PropertiesCollection.driver.SwitchTo().Window(PropertiesCollection.driver.WindowHandles[1]);
+        }
+
+        public void Load() {
+            PropertiesCollection.driver.Navigate().GoToUrl(URL);
+        }
+
+        public void CloseCookiesWindow() {
             wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[class='md-button md-ink-ripple']")));
             PropertiesCollection.driver.FindElement(By.CssSelector("button[class='md-button md-ink-ripple']")).Click();
         }
 
-        public void AddAdressToSendProducts(string adress)
-        {
+        public void AddAdressToSendProducts(string adress) {
             PropertiesCollection.driver.FindElement(By.Name("zipCode")).SendKeys(adress);
             PropertiesCollection.driver.FindElement(By.CssSelector("button[class='md-primary md-button md-ink-ripple']")).Click();
-            //wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[class='md-icon-button c4-close-dialog md-button md-ink-ripple']")));
-            System.Threading.Thread.Sleep(10000);
+            //wait.Until(ExpectedConditions.ElementExists(By.CssSelector("button[class='md-icon-button c4-close-dialog md-button md-ink-ripple']")));
+            System.Threading.Thread.Sleep(8000);
             PropertiesCollection.driver.FindElement(By.CssSelector("button[class='md-icon-button c4-close-dialog md-button md-ink-ripple']")).Click();
         }
     }

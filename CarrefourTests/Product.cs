@@ -1,6 +1,8 @@
-﻿
-namespace CarrefourTests
-{
+﻿/// <summary>
+/// ///
+/// </summary>
+namespace CarrefourTests {
+
     class Product
     {
         string name;
@@ -13,13 +15,13 @@ namespace CarrefourTests
 
         public string Name {
             get {
-                return this.name;
+                return name;
             }
         }
 
         public string Price {
             get {
-                return this.price;
+                return price;
             }
         }
     }
